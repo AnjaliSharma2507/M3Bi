@@ -14,16 +14,18 @@ public class UserBonus {
     @GeneratedValue(strategy = GenerationType.AUTO)
 	private long id;
 	
-	private final Long bonusPoint;
+	private Long bonusPoint;
 	
-	@OneToOne(mappedBy = "bonus")
+	@OneToOne(mappedBy = "bonuspoints")
     private User user;
 
-	public UserBonus(long id, Long bonusPoint, User user) {
-		super();
-		this.id = id;
+	
+	public UserBonus() {
+		this.bonusPoint = null;
+	}
+
+	public UserBonus(Long bonusPoint) {
 		this.bonusPoint = bonusPoint;
-		this.user = user;
 	}
 
 	public long getId() {

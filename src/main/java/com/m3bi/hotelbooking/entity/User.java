@@ -6,6 +6,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 
 @Entity
@@ -14,9 +15,9 @@ public class User {
 	@Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;
-    private final String name;
-    private final String email;
-    private final String password;
+    private  String name;
+    private  String email;
+    private  String password;
     
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "bonus_id", referencedColumnName = "id")
@@ -33,6 +34,18 @@ public class User {
 		this.password = password;
 		this.name = name;
 		this.email = email;
+	}
+	
+    
+    
+    
+    
+    public UserBonus getBonuspoints() {
+		return bonuspoints;
+	}
+
+	public void setBonuspoints(UserBonus bonuspoints) {
+		this.bonuspoints = bonuspoints;
 	}
 	
 	public String getPassword() {
