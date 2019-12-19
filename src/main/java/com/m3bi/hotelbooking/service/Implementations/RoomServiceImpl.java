@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 import com.m3bi.hotelbooking.entity.BookingDetails;
 import com.m3bi.hotelbooking.entity.Room;
 import com.m3bi.hotelbooking.entity.User;
+import com.m3bi.hotelbooking.exception.CustomException;
 import com.m3bi.hotelbooking.model.BookingStatus;
 import com.m3bi.hotelbooking.model.RequestRoomDetails;
 import com.m3bi.hotelbooking.model.RoomDetails;
@@ -38,10 +39,9 @@ public class RoomServiceImpl implements RoomService{
 	private UserBonusRepository userBonusRepository;
 
 	@Override
-	public List<RoomDetails> getAllRooms(Long userId) throws Exception {
+	public List<RoomDetails> getAllRooms(Long userId) throws CustomException {
 		List<Room> rooms = (List<Room>)roomRepository.findAll();
 		List<RoomDetails> roomDetails;
-		User user = getUser(userId);
 		if(userId != null) {
 			User userDetails = getUser(userId);
 			long bonus = userDetails.getBonuspoints().getBonusPoint();
@@ -54,7 +54,7 @@ public class RoomServiceImpl implements RoomService{
 	}
 
 	@Override
-	public BookingDetails bookARoom(RequestRoomDetails roomDetails, Long userId) throws Exception {
+	public BookingDetails bookARoom(RequestRoomDetails roomDetails, Long userId) throws CustomException {
 		BookingDetails bookingDetails = new BookingDetails();
 		Optional<Room> roomOptional = null;
 		Room room = null;
@@ -62,21 +62,21 @@ public class RoomServiceImpl implements RoomService{
 		BookingStatus status = BookingStatus.PENDING_APPROVAL;
 		/*Validations*/
 		if(userId == null) {
-			throw  new Exception("Please Login to book a room");
+			throw  new CustomException("Please Login to book a room");
 		}
 	    if(roomDetails.getCheckInDate() == null || roomDetails.getCheckInDate().isEmpty()
 	    || roomDetails.getCheckOutDate()== null || roomDetails.getCheckOutDate().isEmpty()||roomDetails.getRoom() == null){
-	    	throw new Exception("Please provide checkin, checkout and room details.");
+	    	throw new CustomException("Please provide checkin, checkout and room details.");
 	    }
 		LocalDate checkInDate = LocalDate.parse(roomDetails.getCheckInDate());
 		LocalDate checkOutDate = LocalDate.parse(roomDetails.getCheckOutDate());
 		long noOfDaysBetween = ChronoUnit.DAYS.between(checkInDate, checkOutDate);
 		if(noOfDaysBetween < 1) {
-			throw new Exception("Invalid Checkin And Checkout dates");
+			throw new CustomException("Invalid Checkin And Checkout dates");
 		}
 		roomOptional = roomRepository.findById(roomDetails.getRoom());
 		if(!roomOptional.isPresent()) {
-			throw new Exception("Invalid Room Details");
+			throw new CustomException("Invalid Room Details");
 		}
 		/*Persist*/
 		user = getUser(userId);
@@ -87,27 +87,84 @@ public class RoomServiceImpl implements RoomService{
 		if(roomDetails.isUseBonus()) {
 			Long remainingBonusPoints = (long) 0;
 			if(bonusAmount >= totalPrice) {
-				remainingBonusPoints = user.getBonuspoints().getBonusPoint() - room.getPrice();
+				remainingBonusPoints = bonusAmount - totalPrice;
 				amountToBePaid = (long)0;
 				status = BookingStatus.CONFIRMED;
+				user.getBonuspoints().setBonusPoint(remainingBonusPoints);
+				userBonusRepository.save(user.getBonuspoints());
 			}else {
 				amountToBePaid = totalPrice - user.getBonuspoints().getBonusPoint();
 			}
-			user.getBonuspoints().setBonusPoint(remainingBonusPoints);
-			userBonusRepository.save(user.getBonuspoints());
 		}
 		bookingDetails = bookingDetailsRepository.save(new BookingDetails(checkInDate,checkOutDate,amountToBePaid,totalPrice,noOfDaysBetween,roomDetails.isUseBonus(), status, user, room, bonusAmount));
 		return bookingDetails;
 	}
 	
-	public User getUser(Long userId) throws Exception {
+	public User getUser(Long userId) throws CustomException {
 		Optional<User> user = userRepository.findById(userId);
 		if(user.isPresent()) {
 				return user.get();
 		}else {
-			throw new Exception("Invalid User");
+			throw new CustomException("Invalid User");
 		}
 				
+	}
+	
+	public BookingDetails getBookingDetails(Long bookingId) throws CustomException {
+		Optional<BookingDetails> bookingDetails = bookingDetailsRepository.findById(bookingId);
+		if(bookingDetails.isPresent()) {
+				return bookingDetails.get();
+		}else {
+			throw new CustomException("No Room Booking Found");
+		}
+				
+	}
+
+
+	@Override
+	public BookingDetails confirmBooking(Long userId, Long bookingId) throws CustomException {
+		User user = getUser(userId);
+		BookingDetails bookingDetails = getBookingDetails(bookingId);
+		
+		if(bookingDetails.getStatus().equals(BookingStatus.CONFIRMED)) {
+			throw new CustomException("Booking is already Confirmed.");
+		}
+		
+		if(bookingDetails.getStatus().equals(BookingStatus.PENDING_APPROVAL)) {
+			if(bookingDetails.isBonusApplied()) {
+				user.getBonuspoints().setBonusPoint(bookingDetails.getTotalPrice()-bookingDetails.getBonusAmount());
+				userBonusRepository.save(user.getBonuspoints());
+			}
+			bookingDetails.setStatus(BookingStatus.CONFIRMED);
+			bookingDetails = bookingDetailsRepository.save(bookingDetails);
+		}else {
+			throw new CustomException("Booking can't be confirmed as it is either already confirmed or canceled by the user.");
+		}
+		return bookingDetails;
+	}
+
+	@Override
+	public BookingDetails cancelBooking(Long userId, Long bookingId) throws CustomException {
+		User user = getUser(userId);
+		BookingDetails bookingDetails = getBookingDetails(bookingId);
+		LocalDate today = LocalDate.now();
+		if(today.isAfter(bookingDetails.getCheckInDate())) {
+			throw new CustomException("Booking cannot be canceled.");
+		}
+		
+		if(bookingDetails.getStatus().equals(BookingStatus.CANCELED)) {
+			throw new CustomException("Booking is already canceled.");
+		}
+		
+		if(bookingDetails.getStatus().equals(BookingStatus.CONFIRMED)) {
+			if(bookingDetails.isBonusApplied()) {
+				user.getBonuspoints().setBonusPoint(bookingDetails.getTotalPrice() - bookingDetails.getAmountToBePaid());
+				userBonusRepository.save(user.getBonuspoints());
+			}
+		}
+		bookingDetails.setStatus(BookingStatus.CANCELED);
+		bookingDetails = bookingDetailsRepository.save(bookingDetails);
+		return bookingDetails;
 	}
 	
 

@@ -19,6 +19,8 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 @Entity
 public class User {	
 	
@@ -26,7 +28,9 @@ public class User {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;
     private  String name;
+    private  String username;
     private  String email;
+    @JsonIgnore
     private  String password;
     
     @OneToOne(cascade = CascadeType.ALL)
@@ -44,6 +48,7 @@ public class User {
 		this.password = password;
 		this.name = name;
 		this.email = email;
+		this.username = email;
 	}
 	
     
@@ -76,6 +81,14 @@ public class User {
 	}
 	public String getEmail() {
 		return email;
+	}
+	
+	public String getUsername() {
+		return username;
+	}
+
+	public void setUsername(String username) {
+		this.username = username;
 	}
 
 	@Override

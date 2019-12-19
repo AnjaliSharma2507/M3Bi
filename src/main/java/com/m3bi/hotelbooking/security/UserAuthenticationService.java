@@ -1,5 +1,9 @@
 //package com.m3bi.hotelbooking.security;
 //
+//import static org.springframework.security.core.userdetails.User.withUsername;
+//
+//import java.util.Optional;
+//
 //import org.springframework.beans.factory.annotation.Autowired;
 //import org.springframework.security.core.userdetails.UserDetails;
 //import org.springframework.security.core.userdetails.UserDetailsService;
@@ -17,12 +21,17 @@
 //
 //	@Override
 //	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-//		System.out.println("User::::"+username);
-//		User user =  userRepository.findByName(username);
-//		if(user == null) {
-//			throw new UsernameNotFoundException("No user present with username: "+username);
-//		}
-//		return new AuthenticatedUser(user);
-//	}
+//		User user = userRepository.findByUsername(username).orElseThrow(() ->
+//        new UsernameNotFoundException(String.format("User with name %s does not exist", username)));
+//
+//		return withUsername(user.getUsername())
+//		        .password(user.getPassword())
+//		        .authorities("USER")
+//		        .accountExpired(false)
+//		        .accountLocked(false)
+//		        .credentialsExpired(false)
+//		        .disabled(false)
+//		        .build();
+//			}
 //
 //}
