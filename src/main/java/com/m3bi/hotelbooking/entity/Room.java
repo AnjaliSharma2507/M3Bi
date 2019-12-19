@@ -7,6 +7,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
+import javax.persistence.Transient;
 
 @Entity
 public class Room {
@@ -16,12 +17,20 @@ public class Room {
     private String name;
     private String roomDetails;
     private Long price;
-        
-    
+            
+   
 	public Room() {
 		this.roomDetails = "";
 		this.name = "";
 		this.price = null;
+
+	}
+	
+	public Room(Room room) {
+		this.id = room.id;
+		this.roomDetails = room.roomDetails;
+		this.name = room.name;
+		this.price = room.price;
 
 	}
 	

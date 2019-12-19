@@ -39,6 +39,12 @@ public class UserBonus {
 	public User getUser() {
 		return user;
 	}
+	
+	
+
+	public void setBonusPoint(Long bonusPoint) {
+		this.bonusPoint = bonusPoint;
+	}
 
 	@Override
 	public String toString() {

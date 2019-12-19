@@ -1,16 +1,26 @@
 package com.m3bi.hotelbooking.entity;
 
+import java.util.Set;
+
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Bean;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
+
 @Entity
-public class User {
+public class User {	
 	
 	@Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -25,9 +35,9 @@ public class User {
     
     
     public User() {
-    	this.password = "";
-		this.name = "";
-		this.email = "";
+    	this.password = null;
+		this.name = null;
+		this.email = null;
     }
     
 	public User(String name, String email, String password) {
@@ -37,9 +47,12 @@ public class User {
 	}
 	
     
-    
-    
-    
+	public User(User user) {
+        this.id = user.id;
+        this.name = user.name;
+        this.email = user.email;
+    }
+
     public UserBonus getBonuspoints() {
 		return bonuspoints;
 	}

@@ -1,0 +1,13 @@
+com/m3bi/hotelbooking/entity/BookingDetails.class
+com/m3bi/hotelbooking/application/HotelBookingApplication.class
+com/m3bi/hotelbooking/entity/Room.class
+com/m3bi/hotelbooking/security/PostAuthFilter.class
+com/m3bi/hotelbooking/repository/UserBonusRepository.class
+com/m3bi/hotelbooking/entity/User.class
+com/m3bi/hotelbooking/controller/LoginController.class
+com/m3bi/hotelbooking/security/AuthenticatedUser.class
+com/m3bi/hotelbooking/entity/UserBonus.class
+com/m3bi/hotelbooking/application/ServletInitializer.class
+com/m3bi/hotelbooking/security/UserAuthenticationService.class
+com/m3bi/hotelbooking/repository/RoomRepository.class
+com/m3bi/hotelbooking/repository/UserRepository.class

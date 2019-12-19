@@ -18,6 +18,7 @@ import com.m3bi.hotelbooking.entity.User;
 import com.m3bi.hotelbooking.entity.UserBonus;
 
 @ComponentScan("com.m3bi.hotelbooking.controller")
+@ComponentScan("com.m3bi.hotelbooking.service")
 @EntityScan("com.m3bi.hotelbooking.entity")
 @EnableJpaRepositories("com.m3bi.hotelbooking.repository")
 
@@ -32,11 +33,11 @@ public class HotelBookingApplication {
 	@Bean
     CommandLineRunner init(UserRepository userRepository, RoomRepository roomRepository) {
 		return args -> {
-			  User user1 = new User("Darth Vadar", "darthvadar@gmail.com", "Darth123#");
+			  User user1 = new User("Darth Vadar", "darthvadar@gmail.com", passwordEncoder().encode("Darth123#"));
 	          user1.setBonuspoints(new UserBonus((long) 1000));
 	          userRepository.save(user1);
 	          
-	          User user2 = new User("Obi Wan Kenobi", "obiwankenobi@gmail.com", "Obi123#");
+	          User user2 = new User("Obi Wan Kenobi", "obiwankenobi@gmail.com", passwordEncoder().encode("Obi123#"));
 	          user2.setBonuspoints(new UserBonus((long) 2000));
 	          userRepository.save(user2);
 	          
@@ -51,5 +52,10 @@ public class HotelBookingApplication {
 			
 		};	       
 	}
+	
+	@Bean
+    public PasswordEncoder passwordEncoder() {
+        return new BCryptPasswordEncoder();
+    }
 
 }
