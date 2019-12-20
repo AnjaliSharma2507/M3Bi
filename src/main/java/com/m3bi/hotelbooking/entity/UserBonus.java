@@ -7,6 +7,8 @@ import javax.persistence.Id;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 @Entity
 public class UserBonus {
 	
@@ -16,6 +18,7 @@ public class UserBonus {
 	
 	private Long bonusPoint;
 	
+	@JsonIgnore
 	@OneToOne(mappedBy = "bonuspoints")
     private User user;
 
@@ -48,7 +51,7 @@ public class UserBonus {
 
 	@Override
 	public String toString() {
-		return "UserBonus [id=" + id + ", bonusPoint=" + bonusPoint + ", user=" + user + "]";
+		return "UserBonus [id=" + id + ", bonusPoint=" + bonusPoint+"]";
 	}
 	
 }

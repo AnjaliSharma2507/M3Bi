@@ -11,6 +11,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 
@@ -36,6 +37,11 @@ public class User {
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "bonus_id", referencedColumnName = "id")
     private UserBonus bonuspoints;
+    
+    @JsonIgnore
+	@OneToMany(cascade= CascadeType.ALL)
+	@JoinColumn(name = "booking_id", referencedColumnName = "id")
+    private Set<BookingDetails> bookingDetails;
     
     
     public User() {
@@ -90,10 +96,21 @@ public class User {
 	public void setUsername(String username) {
 		this.username = username;
 	}
+	
+	 
+
+	public Set<BookingDetails> getBookingDetails() {
+		return bookingDetails;
+	}
+
+	public void setBookingDetails(Set<BookingDetails> bookingDetails) {
+		this.bookingDetails = bookingDetails;
+	}
 
 	@Override
 	public String toString() {
-		return "User [id=" + id + ", name=" + name + ", email=" + email + "]";
+		return "User [id=" + id + ", name=" + name + ", username=" + username + ", email=" + email + ", bonuspoints="
+				+ bonuspoints+"]";
 	}
   
 
