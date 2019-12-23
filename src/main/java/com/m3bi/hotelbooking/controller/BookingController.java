@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestAttribute;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -26,20 +27,20 @@ public class BookingController {
 	
 	@PostMapping
 	@ResponseBody
-	public CustomResponse bookARoom(@RequestHeader("id") Long userid, @RequestBody RequestRoomDetails requestRoomDetails) throws CustomException{
+	public CustomResponse bookARoom(@RequestAttribute("id") Long userid, @RequestBody RequestRoomDetails requestRoomDetails) throws CustomException{
 		return new CustomResponse(true, null, bookingService.bookARoom(requestRoomDetails, userid));
 	}
 	
 	@GetMapping("/confirm/{bookingId}")
 	@ResponseBody
-	public CustomResponse confirmBooking(@RequestHeader("id") Long userId, @PathVariable("bookingId") Long bookingId) throws CustomException{
+	public CustomResponse confirmBooking(@RequestAttribute("id") Long userId, @PathVariable("bookingId") Long bookingId) throws CustomException{
 		return new CustomResponse(true, null, bookingService.confirmBooking(userId, bookingId));
 		
 	}
 	
 	@GetMapping("/cancel/{bookingId}")
 	@ResponseBody
-	public CustomResponse cancelBooking(@RequestHeader("id") Long userId, @PathVariable("bookingId") Long bookingId) throws CustomException{
+	public CustomResponse cancelBooking(@RequestAttribute("id") Long userId, @PathVariable("bookingId") Long bookingId) throws CustomException{
 		return new CustomResponse(true, null, bookingService.cancelBooking(userId, bookingId));
 		
 	}

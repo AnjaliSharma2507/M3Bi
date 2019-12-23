@@ -45,9 +45,6 @@ public class User {
     
     
     public User() {
-    	this.password = null;
-		this.name = null;
-		this.email = null;
     }
     
 	public User(String name, String email, String password) {

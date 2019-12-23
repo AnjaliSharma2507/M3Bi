@@ -4,6 +4,7 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.domain.EntityScan;
+import org.springframework.boot.autoconfigure.security.servlet.SecurityAutoConfiguration;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
@@ -11,19 +12,21 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 import com.m3bi.hotelbooking.repository.RoomRepository;
-import com.m3bi.hotelbooking.repository.UserBonusRepository;
 import com.m3bi.hotelbooking.repository.UserRepository;
+import com.m3bi.hotelbooking.security.WebSecurityConfiguration;
 import com.m3bi.hotelbooking.entity.Room;
 import com.m3bi.hotelbooking.entity.User;
 import com.m3bi.hotelbooking.entity.UserBonus;
 
 @ComponentScan("com.m3bi.hotelbooking.controller")
 @ComponentScan("com.m3bi.hotelbooking.service")
+@ComponentScan("com.m3bi.hotelbooking.security")
 @EntityScan("com.m3bi.hotelbooking.entity")
 @EnableJpaRepositories("com.m3bi.hotelbooking.repository")
 
-@SpringBootApplication
+@SpringBootApplication(exclude = {SecurityAutoConfiguration.class})
 public class HotelBookingApplication {
+	
 
 
 	public static void main(String[] args) {
@@ -37,7 +40,7 @@ public class HotelBookingApplication {
 	          user1.setBonuspoints(new UserBonus((long) 1000));
 	          userRepository.save(user1);
 	          
-	          User user2 = new User("Obi Wan Kenobi", "obiwankenobi@gmail.com", passwordEncoder().encode("Obi123#"));
+	          User user2 = new User("Obi Wan Kenobi", "obiwankenobi@gmail.com", "Obi123#");
 	          user2.setBonuspoints(new UserBonus((long) 2000));
 	          userRepository.save(user2);
 	          
@@ -52,10 +55,5 @@ public class HotelBookingApplication {
 			
 		};	       
 	}
-	
-	@Bean
-    public PasswordEncoder passwordEncoder() {
-        return new BCryptPasswordEncoder();
-    }
 
 }

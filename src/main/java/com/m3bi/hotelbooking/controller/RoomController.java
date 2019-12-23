@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestAttribute;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -28,7 +29,7 @@ public class RoomController {
 	
 	@GetMapping
 	@ResponseBody
-	public CustomResponse getRooms(@RequestHeader(value = "id", required = false) Long userid) throws CustomException{
+	public CustomResponse getRooms(@RequestAttribute(value = "id", required = false) Long userid) throws CustomException{
 		
 		return new CustomResponse(true, null, roomService.getAllRooms(userid));
 	}

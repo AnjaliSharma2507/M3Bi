@@ -2,6 +2,7 @@ package com.m3bi.hotelbooking.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestAttribute;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -27,8 +28,7 @@ public class UserController {
 	
 	@GetMapping
 	@ResponseBody
-	public CustomResponse getUser(@RequestHeader("id") Long userid) throws CustomException{
-		
+	public CustomResponse getUser(@RequestAttribute("id") Long userid) throws CustomException{
 		return new CustomResponse(true, null,userService.getUser(userid));
 	}
 
