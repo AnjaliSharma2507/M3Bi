@@ -5,6 +5,7 @@ import java.util.List;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.AuthenticationException;
 import org.springframework.web.bind.ServletRequestBindingException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -35,6 +36,16 @@ public class ExceptionController {
 	        CustomError error = new CustomError(ex.getMessage(), HttpStatus.BAD_REQUEST.toString());
 	        CustomResponse response = new CustomResponse(false, error, null);
 	        return new ResponseEntity(response, HttpStatus.BAD_REQUEST);
+	    }
+	    
+	    @ExceptionHandler(AuthenticationException.class)
+	    public final ResponseEntity<Object> handleAuthenticationException(Exception ex, WebRequest request) 
+	    {
+	        List<String> details = new ArrayList<>();
+	        details.add(ex.getLocalizedMessage());
+	        CustomError error = new CustomError(ex.getMessage(), HttpStatus.UNAUTHORIZED.toString());
+	        CustomResponse response = new CustomResponse(false, error, null);
+	        return new ResponseEntity(response, HttpStatus.UNAUTHORIZED);
 	    }
 	    
 	    @ExceptionHandler(Exception.class)

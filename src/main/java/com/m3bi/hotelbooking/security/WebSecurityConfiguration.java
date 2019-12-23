@@ -25,7 +25,9 @@ public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
 	   protected void configure(HttpSecurity http) throws Exception {;
 		   http.httpBasic().and()
            .authorizeRequests()
-           .anyRequest().authenticated().and().addFilterAfter(new PostAuthenticationFilter(), BasicAuthenticationFilter.class);
+           .anyRequest().authenticated().and().addFilterAfter(new PostAuthenticationFilter(), BasicAuthenticationFilter.class)
+           .logout().logoutUrl("/logout").invalidateHttpSession(true).deleteCookies("JSESSIONID");
+           ;
 	   }
 	   
 	   @Autowired

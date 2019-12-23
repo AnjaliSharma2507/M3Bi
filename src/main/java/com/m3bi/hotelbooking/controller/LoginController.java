@@ -12,15 +12,21 @@ import com.m3bi.hotelbooking.model.CustomResponse;
 
 
 @RestController
-@RequestMapping("/login")
 public class LoginController {
 	
-	@GetMapping
+	@GetMapping("/login")
 	@ResponseBody
 	public CustomResponse login() {
 		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 		String currentPrincipalName = authentication.getName();
 		return new CustomResponse(true, null, currentPrincipalName+" logged in successfully.");
+		
+	}
+	
+	@GetMapping("/logout")
+	@ResponseBody
+	public CustomResponse logout() {
+		return new CustomResponse(true, null, "User logged out successfully.");
 		
 	}
 
