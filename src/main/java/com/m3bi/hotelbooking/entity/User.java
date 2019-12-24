@@ -31,9 +31,11 @@ public class User {
     private  String name;
     private  String username;
     private  String email;
+    
     @JsonIgnore
     private  String password;
     
+
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "bonus_id", referencedColumnName = "id")
     private UserBonus bonuspoints;

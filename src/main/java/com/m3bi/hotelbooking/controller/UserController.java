@@ -1,5 +1,7 @@
 package com.m3bi.hotelbooking.controller;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestAttribute;
@@ -8,6 +10,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.m3bi.hotelbooking.entity.User;
 import com.m3bi.hotelbooking.exception.CustomException;
 import com.m3bi.hotelbooking.model.CustomResponse;
 import com.m3bi.hotelbooking.service.UserService;
@@ -21,15 +24,15 @@ public class UserController {
 	
 	@GetMapping("/all")
 	@ResponseBody
-	public CustomResponse getAllUsers() throws CustomException{
+	public CustomResponse<List<User>> getAllUsers() throws CustomException{
 		
-		return new CustomResponse(true, null,userService.getAllUsers());
+		return new CustomResponse<List<User>>(true, null,userService.getAllUsers());
 	}
 	
 	@GetMapping
 	@ResponseBody
-	public CustomResponse getUser(@RequestAttribute("id") Long userid) throws CustomException{
-		return new CustomResponse(true, null,userService.getUser(userid));
+	public CustomResponse<User> getUser(@RequestAttribute("id") Long userid) throws CustomException{
+		return new CustomResponse<User>(true, null,userService.getUser(userid));
 	}
 
 }

@@ -23,7 +23,6 @@ import com.m3bi.hotelbooking.entity.UserBonus;
 @ComponentScan("com.m3bi.hotelbooking.security")
 @EntityScan("com.m3bi.hotelbooking.entity")
 @EnableJpaRepositories("com.m3bi.hotelbooking.repository")
-
 @SpringBootApplication(exclude = {SecurityAutoConfiguration.class})
 public class HotelBookingApplication {
 	
@@ -43,6 +42,10 @@ public class HotelBookingApplication {
 	          User user2 = new User("Obi Wan Kenobi", "obiwankenobi@gmail.com", "Obi123#");
 	          user2.setBonuspoints(new UserBonus((long) 2000));
 	          userRepository.save(user2);
+	          
+	          User user3 = new User("admin", "admin@admin.com", "admin");
+	          user3.setBonuspoints(new UserBonus((long) 10000));
+	          userRepository.save(user3);
 	          
 	          userRepository.findAll().forEach(System.out::println);
 	          

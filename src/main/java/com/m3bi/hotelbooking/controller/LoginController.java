@@ -1,6 +1,7 @@
 package com.m3bi.hotelbooking.controller;
 
 
+import org.springframework.http.MediaType;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -14,19 +15,19 @@ import com.m3bi.hotelbooking.model.CustomResponse;
 @RestController
 public class LoginController {
 	
-	@GetMapping("/login")
+	@GetMapping(value="/login", produces = "application/json")
 	@ResponseBody
-	public CustomResponse login() {
+	public CustomResponse<String> login() {
 		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 		String currentPrincipalName = authentication.getName();
-		return new CustomResponse(true, null, currentPrincipalName+" logged in successfully.");
+		return new CustomResponse<String>(true, null, currentPrincipalName+" logged in successfully.");
 		
 	}
 	
-	@GetMapping("/logout")
+	@GetMapping(value="/logout", produces = "application/json")
 	@ResponseBody
-	public CustomResponse logout() {
-		return new CustomResponse(true, null, "User logged out successfully.");
+	public CustomResponse<String> logout() {
+		return new CustomResponse<String>(true, null, "User logged out successfully.");
 		
 	}
 

@@ -1,11 +1,11 @@
 package com.m3bi.hotelbooking.model;
 
-public class CustomResponse {
+public class CustomResponse<T> {
 	private Boolean isSuccess;
 	private CustomError error;
-	private Object data;
+	private T data;
 	
-	public CustomResponse(Boolean isSuccess, CustomError error, Object data) {
+	public CustomResponse(Boolean isSuccess, CustomError error, T data) {
 		super();
 		this.isSuccess = isSuccess;
 		this.error = error;
@@ -27,7 +27,7 @@ public class CustomResponse {
 	public Object getData() {
 		return data;
 	}
-	public void setData(Object data) {
+	public void setData(T data) {
 		this.data = data;
 	}
 	

@@ -1,2 +1,4 @@
-/Users/anjalisharma/Documents/Spring/HotelBooking/src/test/java/com/m3bi/hotelbooking/HotelBookingApplicationTests.java
-/Users/anjalisharma/Documents/Spring/HotelBooking/src/test/java/com/m3bi/hotelbooking/LoginTest.java
+/Users/anjalisharma/Documents/Spring/HotelBooking/src/test/java/com/m3bi/hotelbooking/controller/test/UserTest.java
+/Users/anjalisharma/Documents/Spring/HotelBooking/src/test/java/com/m3bi/hotelbooking/controller/test/RoomTest.java
+/Users/anjalisharma/Documents/Spring/HotelBooking/src/test/java/com/m3bi/hotelbooking/controller/test/LoginTest.java
+/Users/anjalisharma/Documents/Spring/HotelBooking/src/test/java/com/m3bi/hotelbooking/application/test/HotelBookingApplicationJPATests.java
