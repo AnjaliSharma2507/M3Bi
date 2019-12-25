@@ -26,7 +26,8 @@ public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
 		   http.httpBasic().and()
            .authorizeRequests()
            .anyRequest().authenticated().and().addFilterAfter(new PostAuthenticationFilter(), BasicAuthenticationFilter.class)
-           .logout().logoutUrl("/logout").invalidateHttpSession(true).deleteCookies("JSESSIONID");
+           .logout().logoutUrl("/logout").invalidateHttpSession(true).deleteCookies("JSESSIONID")
+           .and().csrf().disable();
            ;
 	   }
 	   

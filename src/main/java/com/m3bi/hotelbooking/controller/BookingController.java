@@ -30,20 +30,20 @@ public class BookingController {
 	
 	@PostMapping
 	@ResponseBody
-	public CustomResponse<BookingDetails> bookARoom(@RequestAttribute("id") Long userid, @RequestBody RequestRoomDetails requestRoomDetails) throws CustomException{
+	public CustomResponse<BookingDetails> bookARoom(@RequestAttribute("id") String userid, @RequestBody RequestRoomDetails requestRoomDetails) throws CustomException{
 		return new CustomResponse<BookingDetails>(true, null, bookingService.bookARoom(requestRoomDetails, userid));
 	}
 	
 	@GetMapping("/confirm/{bookingId}")
 	@ResponseBody
-	public CustomResponse<BookingDetails> confirmBooking(@RequestAttribute("id") Long userId, @PathVariable("bookingId") Long bookingId) throws CustomException{
+	public CustomResponse<BookingDetails> confirmBooking(@RequestAttribute("id") String userId, @PathVariable("bookingId") Long bookingId) throws CustomException{
 		return new CustomResponse<BookingDetails>(true, null, bookingService.confirmBooking(userId, bookingId));
 		
 	}
 	
 	@GetMapping("/cancel/{bookingId}")
 	@ResponseBody
-	public CustomResponse<BookingDetails> cancelBooking(@RequestAttribute("id") Long userId, @PathVariable("bookingId") Long bookingId) throws CustomException{
+	public CustomResponse<BookingDetails> cancelBooking(@RequestAttribute("id") String userId, @PathVariable("bookingId") Long bookingId) throws CustomException{
 		return new CustomResponse<BookingDetails>(true, null, bookingService.cancelBooking(userId, bookingId));
 		
 	}
@@ -51,14 +51,14 @@ public class BookingController {
 	
 	@GetMapping
 	@ResponseBody
-	public CustomResponse<Set<BookingDetails>> getAllBooking(@RequestHeader("id") Long userId)throws CustomException{
+	public CustomResponse<Set<BookingDetails>> getAllBooking(@RequestAttribute("id") String userId)throws CustomException{
 		return new CustomResponse<Set<BookingDetails>>(true, null, bookingService.getAllBooking(userId));
 		
 	}
 	
 	@GetMapping("{bookingId}")
 	@ResponseBody
-	public CustomResponse<BookingDetails> getBookingById(@RequestHeader("id") Long userId, @PathVariable("bookingId") Long bookingId) throws CustomException{
+	public CustomResponse<BookingDetails> getBookingById(@RequestHeader("id") String userId, @PathVariable("bookingId") Long bookingId) throws CustomException{
 		return new CustomResponse<BookingDetails>(true, null, bookingService.getBookingDetails(bookingId, userId));
 		
 	}

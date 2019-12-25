@@ -39,13 +39,8 @@ public class RoomDetails extends Room{
 
 	@Override
 	public String toString() {
-		return "RoomDetails [bonusAmountApplied=" + bonusAmountApplied + ", updatedPrice=" + updatedPrice + ", getId()="
-				+ getId() + ", getName()=" + getName() + ", getRoomDetails()=" + getRoomDetails() + ", getPrice()="
-				+ getPrice() + ", toString()=" + super.toString() + ", getClass()=" + getClass() + ", hashCode()="
-				+ hashCode() + "]";
+		return super.toString()+" RoomDetails [bonusAmountApplied=" + bonusAmountApplied + ", updatedPrice=" + updatedPrice + "]";
 	}
-    
-    
-    
+
     
 }

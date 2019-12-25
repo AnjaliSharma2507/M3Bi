@@ -9,6 +9,6 @@ import com.m3bi.hotelbooking.model.RoomDetails;
 
 public interface RoomService {
 	
-	public List<RoomDetails> getAllRooms(Long userId) throws CustomException;
+	public List<RoomDetails> getAllRooms(String userid) throws CustomException;
 
 }

@@ -31,7 +31,7 @@ public class RoomController {
 	
 	@GetMapping(produces = "application/json")
 	@ResponseBody
-	public CustomResponse<List<RoomDetails>> getRooms(@RequestAttribute(value = "id", required = false) Long userid) throws CustomException{
+	public CustomResponse<List<RoomDetails>> getRooms(@RequestAttribute(value = "id", required = false) String userid) throws CustomException{
 		
 		return new CustomResponse<List<RoomDetails>>(true, null, roomService.getAllRooms(userid));
 	}

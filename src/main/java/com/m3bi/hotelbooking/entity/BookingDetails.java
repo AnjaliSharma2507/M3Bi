@@ -3,48 +3,47 @@ package com.m3bi.hotelbooking.entity;
 import java.time.LocalDate;
 import java.util.Set;
 
-import javax.persistence.CascadeType;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToMany;
-import javax.persistence.ManyToOne;
-import javax.persistence.OneToOne;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.DBRef;
+import org.springframework.data.mongodb.core.mapping.Document;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.m3bi.hotelbooking.model.BookingStatus;
+import com.m3bi.hotelbooking.utility.DateTime;
+import com.m3bi.hotelbooking.utility.RandomNumber;
 
-@Entity
+@Document("bookingdetails")
 public class BookingDetails {
 	
 	@Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-	private Long id;
-	private LocalDate checkInDate;
-	private LocalDate checkOutDate;
+	private String id;
+	
+	private Long bookingId;
+	private String checkInDate;
+	private String checkOutDate;
 	private Long amountToBePaid;
 	private Long totalPrice;
 	private Long bonusAmount;
 	private Long noOfDays;
 	private Boolean isBonusApplied;
 	private BookingStatus status;
-	
+	private String createdOn;
+	private String updatedOn;
 	
 	@JsonIgnore
-	@ManyToOne(cascade= CascadeType.ALL)
-	@JoinColumn(name = "user_id", referencedColumnName = "id")
+	@DBRef
     private User user;
 	
-	 
-    @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "room_id", referencedColumnName = "id")
+	@DBRef
     private Room room;
     
-	public BookingDetails(LocalDate checkInDate, LocalDate checkOutDate, Long amountToBePaid, Long totalPrice,
+    public BookingDetails() {
+		super();
+	}
+    
+	public BookingDetails(String checkInDate, String checkOutDate, Long amountToBePaid, Long totalPrice,
 			Long noOfDays, Boolean isBonusApplied, BookingStatus status, User user, Room room, Long bonusAmount) {
-
+		this.bookingId = RandomNumber.getRandomNumber();
 		this.checkInDate = checkInDate;
 		this.checkOutDate = checkOutDate;
 		this.amountToBePaid = amountToBePaid;
@@ -55,40 +54,38 @@ public class BookingDetails {
 		this.user = user;
 		this.room = room;
 		this.bonusAmount = bonusAmount;
-	}
-
-
-	public BookingDetails() {
-		super();
+		this.createdOn = DateTime.getCurrentDateTime();
+		this.updatedOn = DateTime.getCurrentDateTime();
+		
 	}
 	
-
-	public Long getId() {
-		return id;
+	public Long getBookingId() {
+		return bookingId;
 	}
 
-
-	public void setId(Long id) {
-		this.id = id;
+	public void setBookingId(Long bookingId) {
+		this.updatedOn = DateTime.getCurrentDateTime();
+		this.bookingId = bookingId;
 	}
 
-
-	public LocalDate getCheckInDate() {
+	public String getCheckInDate() {
 		return checkInDate;
 	}
 
 
-	public void setCheckInDate(LocalDate checkInDate) {
+	public void setCheckInDate(String checkInDate) {
+		this.updatedOn = DateTime.getCurrentDateTime();
 		this.checkInDate = checkInDate;
 	}
 
 
-	public LocalDate getCheckOutDate() {
+	public String getCheckOutDate() {
 		return checkOutDate;
 	}
 
 
-	public void setCheckOutDate(LocalDate checkOutDate) {
+	public void setCheckOutDate(String checkOutDate) {
+		this.updatedOn = DateTime.getCurrentDateTime();
 		this.checkOutDate = checkOutDate;
 	}
 
@@ -99,6 +96,7 @@ public class BookingDetails {
 
 
 	public void setAmountToBePaid(Long amountToBePaid) {
+		this.updatedOn = DateTime.getCurrentDateTime();
 		this.amountToBePaid = amountToBePaid;
 	}
 
@@ -109,6 +107,7 @@ public class BookingDetails {
 
 
 	public void setBonusApplied(Boolean isBonusApplied) {
+		this.updatedOn = DateTime.getCurrentDateTime();
 		this.isBonusApplied = isBonusApplied;
 	}
 
@@ -119,6 +118,7 @@ public class BookingDetails {
 
 
 	public void setUser(User user) {
+		this.updatedOn = DateTime.getCurrentDateTime();
 		this.user = user;
 	}
 
@@ -129,6 +129,7 @@ public class BookingDetails {
 
 
 	public void setRoom(Room room) {
+		this.updatedOn = DateTime.getCurrentDateTime();
 		this.room = room;
 	}
 
@@ -139,6 +140,7 @@ public class BookingDetails {
 
 
 	public void setStatus(BookingStatus status) {
+		this.updatedOn = DateTime.getCurrentDateTime();
 		this.status = status;
 	}
 
@@ -149,6 +151,7 @@ public class BookingDetails {
 
 
 	public void setTotalPrice(Long totalPrice) {
+		this.updatedOn = DateTime.getCurrentDateTime();
 		this.totalPrice = totalPrice;
 	}
 
@@ -159,10 +162,12 @@ public class BookingDetails {
 
 
 	public void setNoOfDays(Long noOfDays) {
+		this.updatedOn = DateTime.getCurrentDateTime();
 		this.noOfDays = noOfDays;
 	}
 	
 	public void setIsBonusApplied(Boolean isBonusApplied) {
+		this.updatedOn = DateTime.getCurrentDateTime();
 		this.isBonusApplied = isBonusApplied;
 	}
 
@@ -173,8 +178,28 @@ public class BookingDetails {
 
 
 	public void setBonusAmount(Long bonusAmount) {
+		this.updatedOn = DateTime.getCurrentDateTime();
 		this.bonusAmount = bonusAmount;
 	}
+
+	public String getId() {
+		return id;
+	}
+
+	public void setId(String id) {
+		this.updatedOn = DateTime.getCurrentDateTime();
+		this.id = id;
+	}
+
+	@Override
+	public String toString() {
+		return "BookingDetails [id=" + id + ", bookingId=" + bookingId + ", checkInDate=" + checkInDate
+				+ ", checkOutDate=" + checkOutDate + ", amountToBePaid=" + amountToBePaid + ", totalPrice=" + totalPrice
+				+ ", bonusAmount=" + bonusAmount + ", noOfDays=" + noOfDays + ", isBonusApplied=" + isBonusApplied
+				+ ", status=" + status + ", user=" + user + ", room=" + room + "]";
+	}
+	
+	
     
 	
 }

@@ -1,0 +1,3 @@
+[
+{ "_id" : { "$oid" : "5e0363a663957f27ad013d5a" }, "bookingId" : { "$numberLong" : "645" }, "checkInDate" : "2019-12-27", "checkOutDate" : "2019-12-28", "amountToBePaid" : { "$numberLong" : "2000" }, "totalPrice" : { "$numberLong" : "3000" }, "bonusAmount" : { "$numberLong" : "1000" }, "noOfDays" : { "$numberLong" : "1" }, "isBonusApplied" : true, "status" : "PENDING_APPROVAL", "createdOn" : "2019/12/25 18:57:02", "updatedOn" : "2019/12/25 18:57:02", "user" : { "$ref" : "user", "$id" : { "$oid" : "5e03491b2941df2192ddac85" } }, "room" : { "$ref" : "room", "$id" : { "$oid" : "5e03491b2941df2192ddac89" } }, "_class" : "com.m3bi.hotelbooking.entity.BookingDetails" }
+]

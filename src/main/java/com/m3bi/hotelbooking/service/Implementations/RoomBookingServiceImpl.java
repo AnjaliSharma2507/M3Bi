@@ -16,7 +16,6 @@ import com.m3bi.hotelbooking.model.BookingStatus;
 import com.m3bi.hotelbooking.model.RequestRoomDetails;
 import com.m3bi.hotelbooking.repository.BookingDetailsRepository;
 import com.m3bi.hotelbooking.repository.RoomRepository;
-import com.m3bi.hotelbooking.repository.UserBonusRepository;
 import com.m3bi.hotelbooking.repository.UserRepository;
 import com.m3bi.hotelbooking.service.RoomBookingService;
 import com.m3bi.hotelbooking.service.UserService;
@@ -29,9 +28,7 @@ public class RoomBookingServiceImpl implements RoomBookingService {
 	
 	@Autowired
 	private BookingDetailsRepository bookingDetailsRepository;
-	
-	@Autowired
-	private UserBonusRepository userBonusRepository;
+
 	
 	@Autowired
 	private RoomRepository roomRepository;
@@ -40,7 +37,7 @@ public class RoomBookingServiceImpl implements RoomBookingService {
 	private UserService userService;
 	
 	@Override
-	public BookingDetails bookARoom(RequestRoomDetails roomDetails, Long userId) throws CustomException {
+	public BookingDetails bookARoom(RequestRoomDetails roomDetails, String userId) throws CustomException {
 		BookingDetails bookingDetails = new BookingDetails();
 		Optional<Room> roomOptional = null;
 		Room room = null;
@@ -60,7 +57,7 @@ public class RoomBookingServiceImpl implements RoomBookingService {
 		if(noOfDaysBetween < 1 || checkInDate.isAfter(checkOutDate) || checkInDate.isBefore(LocalDate.now())) {
 			throw new CustomException("Invalid Checkin And Checkout dates");
 		}
-		roomOptional = roomRepository.findById(roomDetails.getRoom());
+		roomOptional = roomRepository.findByRoomId(roomDetails.getRoom());
 		if(!roomOptional.isPresent()) {
 			throw new CustomException("Invalid Room Details");
 		}
@@ -77,22 +74,22 @@ public class RoomBookingServiceImpl implements RoomBookingService {
 				amountToBePaid = (long)0;
 				status = BookingStatus.CONFIRMED;
 				user.getBonuspoints().setBonusPoint(remainingBonusPoints);
-				userBonusRepository.save(user.getBonuspoints());
+				user = userRepository.save(user);
 			}else {
 				amountToBePaid = totalPrice - user.getBonuspoints().getBonusPoint();
 			}
 		}
-		bookingDetails = bookingDetailsRepository.save(new BookingDetails(checkInDate,checkOutDate,amountToBePaid,totalPrice,noOfDaysBetween,roomDetails.isUseBonus(), status, user, room, bonusAmount));
+		bookingDetails = bookingDetailsRepository.save(new BookingDetails(checkInDate.toString(),checkOutDate.toString(),amountToBePaid,totalPrice,noOfDaysBetween,roomDetails.isUseBonus(), status, user, room, bonusAmount));
 		return bookingDetails;
 	}
 	
 	
 	
 	@Override
-	public BookingDetails getBookingDetails(Long bookingId, Long userId) throws CustomException {
-		Optional<BookingDetails> bookingDetails = bookingDetailsRepository.findById(bookingId);
+	public BookingDetails getBookingDetails(Long bookingId, String userId) throws CustomException {
+		Optional<BookingDetails> bookingDetails = bookingDetailsRepository.findByBookingId(bookingId);
 		if(bookingDetails.isPresent()) {
-			    if(bookingDetails.get().getUser() != null && bookingDetails.get().getUser().getId() == userId) {
+			    if(bookingDetails.get().getUser() != null && bookingDetails.get().getUser().getId().equals(userId)) {
 			    	return bookingDetails.get();
 			    }else {
 			    	throw new CustomException("No Room Booking Found");
@@ -106,7 +103,7 @@ public class RoomBookingServiceImpl implements RoomBookingService {
 
 
 	@Override
-	public BookingDetails confirmBooking(Long userId, Long bookingId) throws CustomException {
+	public BookingDetails confirmBooking(String userId,  Long bookingId) throws CustomException {
 		User user = userService.getUser(userId);
 		BookingDetails bookingDetails = getBookingDetails(bookingId, userId);
 		
@@ -116,8 +113,17 @@ public class RoomBookingServiceImpl implements RoomBookingService {
 		
 		if(bookingDetails.getStatus().equals(BookingStatus.PENDING_APPROVAL)) {
 			if(bookingDetails.isBonusApplied()) {
-				user.getBonuspoints().setBonusPoint(bookingDetails.getTotalPrice()-bookingDetails.getBonusAmount());
-				userBonusRepository.save(user.getBonuspoints());
+				if(user.getBonuspoints().getBonusPoint() <= bookingDetails.getTotalPrice()) {
+				bookingDetails.setAmountToBePaid(bookingDetails.getTotalPrice()-user.getBonuspoints().getBonusPoint());
+				bookingDetails.setBonusAmount(user.getBonuspoints().getBonusPoint());
+				user.getBonuspoints().setBonusPoint((long)0);
+				}else {
+					bookingDetails.setAmountToBePaid((long)0);
+					user.getBonuspoints().setBonusPoint(bookingDetails.getBonusAmount() - bookingDetails.getTotalPrice());
+					bookingDetails.setBonusAmount(bookingDetails.getTotalPrice());
+				}
+				user = userRepository.save(user);
+				
 			}
 			bookingDetails.setStatus(BookingStatus.CONFIRMED);
 			bookingDetails = bookingDetailsRepository.save(bookingDetails);
@@ -128,11 +134,12 @@ public class RoomBookingServiceImpl implements RoomBookingService {
 	}
 
 	@Override
-	public BookingDetails cancelBooking(Long userId, Long bookingId) throws CustomException {
+	public BookingDetails cancelBooking(String userId, Long bookingId) throws CustomException {
 		User user = userService.getUser(userId);
 		BookingDetails bookingDetails = getBookingDetails(bookingId, userId);
 		LocalDate today = LocalDate.now();
-		if(today.isAfter(bookingDetails.getCheckInDate())) {
+		LocalDate checkInDate = LocalDate.parse(bookingDetails.getCheckInDate());
+		if(today.isAfter(checkInDate)) {
 			throw new CustomException("Booking cannot be canceled.");
 		}
 		
@@ -142,8 +149,10 @@ public class RoomBookingServiceImpl implements RoomBookingService {
 		
 		if(bookingDetails.getStatus().equals(BookingStatus.CONFIRMED)) {
 			if(bookingDetails.isBonusApplied()) {
-				user.getBonuspoints().setBonusPoint(bookingDetails.getTotalPrice() - bookingDetails.getAmountToBePaid());
-				userBonusRepository.save(user.getBonuspoints());
+				long retriveBonus =bookingDetails.getTotalPrice() - bookingDetails.getAmountToBePaid();
+				long availableBonus = user.getBonuspoints().getBonusPoint();
+				user.getBonuspoints().setBonusPoint(availableBonus+retriveBonus);
+				user= userRepository.save(user);
 			}
 		}
 		bookingDetails.setStatus(BookingStatus.CANCELED);
@@ -154,9 +163,8 @@ public class RoomBookingServiceImpl implements RoomBookingService {
 
 
 	@Override
-	public Set<BookingDetails> getAllBooking(Long userId) throws CustomException {
-		User user = userService.getUser(userId);
-		return bookingDetailsRepository.findByUser(user);
+	public Set<BookingDetails> getAllBooking(String userId) throws CustomException {
+		return bookingDetailsRepository.findByUser(userId);
 	   		
 	}
 	

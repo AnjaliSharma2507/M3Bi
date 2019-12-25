@@ -1,33 +1,26 @@
 package com.m3bi.hotelbooking.entity;
 
-import javax.persistence.CascadeType;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.OneToOne;
-import javax.persistence.Transient;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.Document;
 
-@Entity
+import com.m3bi.hotelbooking.utility.RandomNumber;
+
+@Document
 public class Room {
 	@Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private long id;
+    private String id;
+	
+    private long roomId;
     private String name;
     private String roomDetails;
     private Long price;
             
    
 	public Room() {
-		this.roomDetails = "";
-		this.name = "";
-		this.price = null;
-
 	}
 	
 	public Room(Room room) {
-		this.id = room.id;
+		this.roomId = room.roomId;
 		this.roomDetails = room.roomDetails;
 		this.name = room.name;
 		this.price = room.price;
@@ -35,16 +28,12 @@ public class Room {
 	}
 	
 	public Room(String name, String roomDetails, Long price) {
-		this.roomDetails = "";
-		this.name = "";
-		this.price = null;
+        this.roomId = RandomNumber.getRandomNumber();
 		this.name = name;
 		this.roomDetails = roomDetails;
 		this.price = price;
 	}
-	public long getId() {
-		return id;
-	}
+	
 	public String getName() {
 		return name;
 	}
@@ -54,10 +43,41 @@ public class Room {
 	public Long getPrice() {
 		return price;
 	}
+
+	public String getId() {
+		return id;
+	}
+
+	public long getRoomId() {
+		return roomId;
+	}
+
+	public void setRoomId(long roomId) {
+		this.roomId = roomId;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	public void setRoomDetails(String roomDetails) {
+		this.roomDetails = roomDetails;
+	}
+
+	public void setPrice(Long price) {
+		this.price = price;
+	}
+
+	public void setId(String id) {
+		this.id = id;
+	}
+
 	@Override
 	public String toString() {
-		return "Room [id=" + id + ", name=" + name + ", roomDetails=" + roomDetails + ", price=" + price + "]";
+		return "Room [id=" + id + ", roomId=" + roomId + ", name=" + name + ", roomDetails=" + roomDetails + ", price="
+				+ price + "]";
 	}
+     
 
 
 }

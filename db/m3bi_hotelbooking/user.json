@@ -1,0 +1,5 @@
+[
+{ "_id" : { "$oid" : "5e03491b2941df2192ddac85" }, "userId" : { "$numberLong" : "-6696108664591948363" }, "name" : "Darth Vadar", "username" : "darthvadar@gmail.com", "email" : "darthvadar@gmail.com", "password" : "Darth123#", "bonuspoints" : { "_id" : { "$numberLong" : "-8928665729741337645" }, "bonusPoint" : { "$numberLong" : "1000" } }, "_class" : "com.m3bi.hotelbooking.entity.User" },
+{ "_id" : { "$oid" : "5e03491b2941df2192ddac86" }, "userId" : { "$numberLong" : "5634261565580690453" }, "name" : "Obi Wan Kenobi", "username" : "obiwankenobi@gmail.com", "email" : "obiwankenobi@gmail.com", "password" : "Obi123#", "bonuspoints" : { "_id" : { "$numberLong" : "-1808922755027854496" }, "bonusPoint" : { "$numberLong" : "2000" } }, "_class" : "com.m3bi.hotelbooking.entity.User" },
+{ "_id" : { "$oid" : "5e03491b2941df2192ddac87" }, "userId" : { "$numberLong" : "-4609457926014668721" }, "name" : "admin", "username" : "admin@admin.com", "email" : "admin@admin.com", "password" : "admin", "bonuspoints" : { "_id" : { "$numberLong" : "-1954044806829959815" }, "bonusPoint" : { "$numberLong" : "10000" } }, "_class" : "com.m3bi.hotelbooking.entity.User" }
+]

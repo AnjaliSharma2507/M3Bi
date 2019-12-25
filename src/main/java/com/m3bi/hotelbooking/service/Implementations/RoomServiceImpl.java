@@ -18,7 +18,6 @@ import com.m3bi.hotelbooking.model.RequestRoomDetails;
 import com.m3bi.hotelbooking.model.RoomDetails;
 import com.m3bi.hotelbooking.repository.BookingDetailsRepository;
 import com.m3bi.hotelbooking.repository.RoomRepository;
-import com.m3bi.hotelbooking.repository.UserBonusRepository;
 import com.m3bi.hotelbooking.repository.UserRepository;
 import com.m3bi.hotelbooking.service.RoomService;
 import com.m3bi.hotelbooking.service.UserService;
@@ -34,7 +33,7 @@ public class RoomServiceImpl implements RoomService{
 	private UserService userService;
 
 	@Override
-	public List<RoomDetails> getAllRooms(Long userId) throws CustomException {
+	public List<RoomDetails> getAllRooms(String userId) throws CustomException {
 		List<Room> rooms = (List<Room>)roomRepository.findAll();
 		List<RoomDetails> roomDetails;
 		if(userId != null) {

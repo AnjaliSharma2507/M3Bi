@@ -8,14 +8,14 @@ import com.m3bi.hotelbooking.model.RequestRoomDetails;
 
 public interface RoomBookingService {
 
-	public BookingDetails bookARoom(RequestRoomDetails roomDetails, Long userId) throws CustomException;
+	public BookingDetails bookARoom(RequestRoomDetails roomDetails, String userId) throws CustomException;
 
-	public BookingDetails cancelBooking(Long userId, Long bookingId) throws CustomException;
+	public BookingDetails cancelBooking(String userId, Long bookingId) throws CustomException;
 
-	public BookingDetails confirmBooking(Long userId, Long bookingId) throws CustomException;
+	public BookingDetails confirmBooking(String userId, Long bookingId) throws CustomException;
 	
-	public BookingDetails getBookingDetails(Long bookingId, Long userId) throws CustomException;
+	public BookingDetails getBookingDetails(Long bookingId, String userId) throws CustomException;
 	
-	public Set<BookingDetails> getAllBooking(Long userId) throws CustomException;
+	public Set<BookingDetails> getAllBooking(String userId) throws CustomException;
 
 }

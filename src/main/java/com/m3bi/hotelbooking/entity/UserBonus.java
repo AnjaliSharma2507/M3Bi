@@ -1,33 +1,22 @@
 package com.m3bi.hotelbooking.entity;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.OneToOne;
-import javax.persistence.Table;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.m3bi.hotelbooking.utility.RandomNumber;
 
-@Entity
+
 public class UserBonus {
-	
-	@Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+
 	private long id;
 	
 	private Long bonusPoint;
 	
-	@JsonIgnore
-	@OneToOne(mappedBy = "bonuspoints")
-    private User user;
-
 	
 	public UserBonus() {
 		this.bonusPoint = null;
 	}
 
 	public UserBonus(Long bonusPoint) {
+		this.id = RandomNumber.getRandomNumber();
 		this.bonusPoint = bonusPoint;
 	}
 
@@ -37,13 +26,7 @@ public class UserBonus {
 
 	public Long getBonusPoint() {
 		return bonusPoint;
-	}
-
-	public User getUser() {
-		return user;
-	}
-	
-	
+	}	
 
 	public void setBonusPoint(Long bonusPoint) {
 		this.bonusPoint = bonusPoint;

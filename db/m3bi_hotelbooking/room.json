@@ -1,0 +1,6 @@
+[
+{ "_id" : { "$oid" : "5e03491b2941df2192ddac88" }, "roomId" : { "$numberLong" : "1" }, "name" : "Super Delux", "roomDetails" : "1 extra-large double bed, free wifi, AC", "price" : { "$numberLong" : "1500" }, "_class" : "com.m3bi.hotelbooking.entity.Room" },
+{ "_id" : { "$oid" : "5e03491b2941df2192ddac89" }, "roomId" : { "$numberLong" : "2" }, "name" : "Fairfield King Room", "roomDetails" : "1 large double bed \n This twin/double room has a flat-screen TV, electric kettle and minibar.", "price" : { "$numberLong" : "3000" }, "_class" : "com.m3bi.hotelbooking.entity.Room" },
+{ "_id" : { "$oid" : "5e03491b2941df2192ddac8a" }, "roomId" : { "$numberLong" : "3" }, "name" : "Standard Double Room", "roomDetails" : "1 large double bed, free wifi, AC", "price" : { "$numberLong" : "1000" }, "_class" : "com.m3bi.hotelbooking.entity.Room" },
+{ "_id" : { "$oid" : "5e03491b2941df2192ddac8b" }, "roomId" : { "$numberLong" : "4" }, "name" : "Business Queen Room", "roomDetails" : "1 double bed 28 m²  View  Air conditioning  Ensuite bathroom  Flat-screen TV  Minibar  Free WiFi ", "price" : { "$numberLong" : "2000" }, "_class" : "com.m3bi.hotelbooking.entity.Room" }
+]
