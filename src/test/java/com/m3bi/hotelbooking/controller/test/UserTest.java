@@ -33,7 +33,7 @@ public class UserTest {
     
     @Before
     public void setUp() throws MalformedURLException {
-    	restTemplate = new TestRestTemplate("admin@admin.com", "admin");
+    	restTemplate = new TestRestTemplate("test@gmail.com", "test");
     	base = new URL("http://localhost:"+randomServerPort);
     }
     

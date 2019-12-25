@@ -36,7 +36,7 @@ public class LoginTest {
 	    
 	    @Before
 	    public void setUp() throws MalformedURLException {
-	    	restTemplate = new TestRestTemplate("admin@admin.com", "admin");
+	    	restTemplate = new TestRestTemplate("test@gmail.com", "test");
 	    	base = new URL("http://localhost:"+randomServerPort+"/login");
 	    }
 	
@@ -48,7 +48,7 @@ public class LoginTest {
 	
 	    @Test
 	    public void callLoginWithWrongCred() throws Exception {
-	    	restTemplate = new TestRestTemplate("admin@admin.com", "admin1");
+	    	restTemplate = new TestRestTemplate("test@gmail.com", "test@gmail.com");
 	    	ResponseEntity<String> response = restTemplate.getForEntity(base.toString(), String.class);
 	    	assertEquals(HttpStatus.UNAUTHORIZED, response.getStatusCode());
 	    	assertTrue(HttpStatus.UNAUTHORIZED.equals(response.getStatusCode()));

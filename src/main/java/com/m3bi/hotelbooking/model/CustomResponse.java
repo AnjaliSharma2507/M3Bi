@@ -5,6 +5,11 @@ public class CustomResponse<T> {
 	private CustomError error;
 	private T data;
 	
+	
+	public CustomResponse() {
+		super();
+	}
+
 	public CustomResponse(Boolean isSuccess, CustomError error, T data) {
 		super();
 		this.isSuccess = isSuccess;
@@ -12,9 +17,6 @@ public class CustomResponse<T> {
 		this.data = data;
 	}
 	
-	public Boolean getIsSuccess() {
-		return isSuccess;
-	}
 	public void setIsSuccess(Boolean isSuccess) {
 		this.isSuccess = isSuccess;
 	}
@@ -29,6 +31,10 @@ public class CustomResponse<T> {
 	}
 	public void setData(T data) {
 		this.data = data;
+	}
+
+	public Boolean getIsSuccess() {
+		return isSuccess;
 	}
 	
 	

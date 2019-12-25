@@ -18,7 +18,6 @@ com/m3bi/hotelbooking/entity/Room.class
 com/m3bi/hotelbooking/controller/RoomController.class
 com/m3bi/hotelbooking/controller/UserController.class
 com/m3bi/hotelbooking/security/CustomAuthenticationProvider.class
-com/m3bi/hotelbooking/repository/UserBonusRepository.class
 com/m3bi/hotelbooking/entity/User.class
 com/m3bi/hotelbooking/model/CustomResponse.class
 com/m3bi/hotelbooking/service/RoomBookingService.class

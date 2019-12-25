@@ -32,14 +32,13 @@ public class RoomTest {
     
     @Before
     public void setUp() throws MalformedURLException {
-    	restTemplate = new TestRestTemplate("admin@admin.com", "admin");
+    	restTemplate = new TestRestTemplate("test@gmail.com", "test");
     	base = new URL("http://localhost:"+randomServerPort);
     }
     
     @Test
     public void getAllRoomTest()throws IllegalStateException, IOException {
     	ResponseEntity<String> response = restTemplate.getForEntity(base.toString()+"/room", String.class);
-    	System.out.println("Response:::"+response.getBody());
     	assertEquals(HttpStatus.OK, response.getStatusCode());
     }
     

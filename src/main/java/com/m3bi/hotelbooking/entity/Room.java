@@ -20,6 +20,7 @@ public class Room {
 	}
 	
 	public Room(Room room) {
+		this.id=room.id;
 		this.roomId = room.roomId;
 		this.roomDetails = room.roomDetails;
 		this.name = room.name;
